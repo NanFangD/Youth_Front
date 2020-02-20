@@ -1,6 +1,6 @@
 <template class="admin">
     <!--test-->
-    <el-container >
+    <el-container>
         <el-aside style="width: 200px;margin-top:20px">
             <side-menu @indexSelect="selectByIndexAndUid" ref="sideMenu"></side-menu>
         </el-aside>

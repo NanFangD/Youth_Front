@@ -49,14 +49,14 @@
                         })
                         .then(
                             successResponse => {
-                                if (successResponse.data ===true) {
+                                if (successResponse.data !=="") {
                                     console.log(successResponse.data);
                                     this.$message({
                                         showClose: true,
                                         message: '登录成功',
                                         type: 'success'
                                     });
-                                    localStorage.setItem('user',successResponse.data.uid);
+                                    localStorage.setItem('user',successResponse.data);
                                     // localStorage.setItem('user',JSON.stringify(successResponse.data.uid));
                                     this.$router.replace({path: '/library'})
                                 }else{
