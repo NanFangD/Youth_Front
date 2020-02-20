@@ -48,7 +48,7 @@
                     <el-upload
                             class="upload-demo"
                             accept="image/jpeg,image/gif,image/png"
-                            action="http://118.25.61.247:8443/api/uploadImg"
+                            action="http://localhost:8443/api/uploadImg"
                             :on-exceed="handleExceed"
                             :on-remove="handleRemove"
                             :before-upload="beforeUpload"
@@ -708,7 +708,6 @@
 </script>
 
 <style scoped>
-
     .input::-webkit-input-placeholder {
         color: red;
     }

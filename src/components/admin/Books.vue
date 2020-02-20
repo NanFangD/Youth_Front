@@ -7,7 +7,7 @@
                 <p slot="content" style="font-size: 14px;margin-bottom: 6px;">《{{item.title}}》</p>
                 <p slot="content" style="font-size: 13px;margin-bottom: 6px">
                     <span>{{item.author}}</span> /
-                    <span>{{item.date}}</span> /   
+                    <span>{{item.date}}</span> /
                     <span>{{item.price}}元</span>
                 </p>
                 <el-card style="width: 135px;margin-bottom: 20px;height: 233px;float: left;margin-right: 15px" class="book"
@@ -43,7 +43,7 @@
                     <div class="author" style="color: #ee231e;">{{item.price}}元 </div>
                 </el-card>
             </el-tooltip>
-            <edit-form @onSubmit="loadBooks()" ref="edit"></edit-form>
+            <edit-form @onSubmit="loadBooks()" ref="edit" class="editForm"></edit-form>
         </el-row>
         <el-row>
             <el-pagination

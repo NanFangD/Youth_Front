@@ -1,10 +1,11 @@
 <template class="admin">
     <el-container >
         <el-aside style="width: 200px;margin-top:20px">
-            <SideMenu @indexSelect="selectByIndexAndUid" ref="sideMenu"></SideMenu>
+            <side-menu @indexSelect="selectByIndexAndUid" ref="sideMenu"></side-menu>
         </el-aside>
         <el-main>
-            <Books books class="books-area" ref="booksArea"></Books>
+            <change-password class="changeButton"></change-password>
+            <Books books class="books-area" ref="booksArea" ></Books>
         </el-main>
     </el-container>
 </template>
@@ -12,10 +13,11 @@
 <script>
     import SideMenu from './SideMenu'
     import Books from './Books'
+    import ChangePassword from './ChangePassword'
     export default {
         name: "Admin",
         components:{
-            SideMenu,Books
+            SideMenu,Books,ChangePassword
         },
         methods:{
             selectByIndexAndUid(index,uid){
@@ -37,6 +39,11 @@
 </script>
 
 <style scoped>
+    .changeButton{
+        position: absolute;
+        right: 1%;
+        /*text-align: right;*/
+    }
     .admin{
         overflow:scroll;
     }
