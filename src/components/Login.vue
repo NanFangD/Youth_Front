@@ -49,8 +49,8 @@
                         })
                         .then(
                             successResponse => {
-                                if (successResponse.data !== null) {
-                                    console.log(successResponse);
+                                if (successResponse.data ===true) {
+                                    console.log(successResponse.data);
                                     this.$message({
                                         showClose: true,
                                         message: '登录成功',
