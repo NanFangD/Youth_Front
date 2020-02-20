@@ -57,6 +57,7 @@
                             :on-change="handleOnChange"
                             ref="upload"
                             :file-list="fileList"
+                            :auto-upload="false"
                             list-type="picture">
                         <el-button slot="trigger" size="small" type="success">点击上传</el-button>
                         <div slot="tip"  class="el-upload__tip">只能上传jpg/png/gif文件，且不超过1M</div>
@@ -72,7 +73,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible=false">取消</el-button>
+                <el-button @click="onCancel">取消</el-button>
                 <el-button type="primary" @click="onSubmit">确定</el-button>
             </div>
         </el-dialog>
@@ -432,6 +433,10 @@
             /*******imgUpload方法******/
             //有一点bug，如果上传图片后不确人，直接刷新页面，服务器的图片不会存到数据库中，这样就导致成为野图片
             //文件上传成功后将文件的地址赋给变量imgs
+            onCancel(){
+                this.dialogFormVisible=false;
+                console.log("cancel")
+            },
             handleSuccess(response,file,fileList){
                 this.form.imgs[fileList.length-1].img=response;
             },
