@@ -29,6 +29,9 @@
                         联&nbsp;系&nbsp;人&nbsp;:&nbsp;<span style="color: #000000;">{{bookMsg.contact}}</span>
                     </div>
                     <div class=" div-msg">
+                        电&nbsp;话&nbsp;:&nbsp;<span style="color: #000000;">{{bookMsg.phone}}</span>
+                    </div>
+                    <div class=" div-msg">
                         Q&nbsp;Q&nbsp;:&nbsp;<span style="color: #000000;">{{bookMsg.qq}}</span>
                     </div>
                     <div class=" div-msg">
@@ -89,7 +92,6 @@
             }
         },
         created(){
-            console.log("created");
             this.bookMsg.title=this.$route.query.title;
             this.bookMsg.cover=this.$route.query.cover;
             this.bookMsg.price=this.$route.query.price;
