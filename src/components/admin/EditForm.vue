@@ -45,7 +45,7 @@
                     <el-upload
                             class="upload-demo"
                             accept="image/jpeg,image/gif,image/png"
-                            action="http://localhost:8443/api/uploadImg"
+                            action="http://118.25.61.247:8443/api/uploadImg"
                             :on-exceed="handleExceed"
                             :on-remove="handleRemove"
                             :on-preview="handlePictureCardPreview"
