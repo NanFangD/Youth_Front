@@ -10,13 +10,9 @@
                     <el-input v-model="form.author"  autocomplete="off" placeholder="请输入作者"></el-input>
                 </el-form-item>
                 <el-form-item label="出版日期" :label-width="formLabelWidth" prop="date">
-                    <el-date-picker
-                            v-model="form.date"
-                            type="date"
-                            value-format="yyyy-MM-dd"
-                            placeholder="选择日期">
-                    </el-date-picker>
-                    <!--<el-input v-model="form.date"  autocomplete="off" placeholder="请输入出版日期"></el-input>-->
+                    <div class="block">
+                        <el-date-picker v-model="form.date" type="year" placeholder="选择年" ></el-date-picker>
+                    </div>
                 </el-form-item>
                 <el-form-item label="价格" :label-width="formLabelWidth" prop="price">
                     <el-input v-model="form.price"  autocomplete="off" placeholder="请输入与价格" oninput = "value=value.replace(/[^\d]/g,'')"></el-input>
@@ -44,20 +40,20 @@
                 <el-form-item label="简介" :label-width="formLabelWidth" prop="abs">
                     <el-input type="textarea"  v-model="form.abs" autocomplete="off" placeholder="请输入所出售书本简介"></el-input>
                 </el-form-item>
-                <el-form-item label="封面" :label-width="formLabelWidth" prop="cover">
+                <!--图片上传-->
+                <el-form-item label="上传图片" :label-width="formLabelWidth" prop="cover">
                     <el-upload
                             class="upload-demo"
                             accept="image/jpeg,image/gif,image/png"
-                            action="http://118.25.61.247:8443/api/uploadImg"
+                            action="http://localhost:8443/api/uploadImg"
                             :on-exceed="handleExceed"
                             :on-remove="handleRemove"
-                            :before-upload="beforeUpload"
                             :on-preview="handlePictureCardPreview"
                             :on-success="handleSuccess"
-                            :on-progress="handleProgress"
                             :limit="6"
                             :on-change="handleOnChange"
                             ref="upload"
+                            :auto-upload="false"
                             :file-list="fileList"
                             list-type="picture">
                         <el-button slot="trigger" size="small" type="success">点击上传</el-button>
@@ -67,6 +63,7 @@
                     <el-dialog :visible.sync="dialogVisible" append-to-body>
                         <img width="100%" fit="contain" :src="dialogImageUrl" alt="">
                     </el-dialog>
+                    <!--选择专业类别-->
                 </el-form-item>
                 <el-form-item label="分类" :label-width="formLabelWidth" prop="cid">
                     <template slot="title">专业课</template>
@@ -77,9 +74,10 @@
                     </el-cascader>
                 </el-form-item>
             </el-form>
+            <!--确定、取消按钮-->
             <div slot="footer" class="dialog-footer">
                 <el-button @click="onCancel">取消</el-button>
-                <el-button type="primary" @click="onSubmit">确定</el-button>
+                <el-button type="primary" @click="handleSubmit">确定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -92,6 +90,7 @@
         },
         data() {
             return {
+                successUpload:0,
                 dialogVisible:false,
                 dialogImageUrl:'',
                 fileList: [],
@@ -430,22 +429,40 @@
             }
         },
         methods:{
-            /**********页面初始化，挂载组件时**********/
-            mounted(){
-                //获得用户名，以便获得用户数据
-                console.log("EditForm:mounted");
+            //时间延迟加载1.5秒
+            handleSubmit() {
+                //图片提交至后端
+                this.$refs.upload.submit();
+                const loading = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+                setTimeout(() => {
+                    //关闭延迟界面
+                    loading.close();
+                    //数据提交
+                    this.onSubmit()
+                }, 1500);
             },
-            /***************************************/
-
             /*******imgUpload方法******/
-            //有一点bug，如果上传图片后不确人，直接刷新页面，服务器的图片不会存到数据库中，这样就导致成为野图片
-            //文件上传成功后将文件的地址赋给变量imgs
+            //只有点击确定按钮后文件才开始上传
+            //取消按钮
             onCancel(){
+                //弹窗隐藏
                 this.dialogFormVisible=false;
-                console.log("cancel")
+                //清除弹窗的内容
+                this.clearEditForm();
+                this.clearImgs();
             },
-            handleSuccess(response,file,fileList){
-                this.form.imgs[fileList.length-1].img=response;
+            handleSuccess(response, file, fileList) {
+                //记录上传成功的图片个数
+                this.successUpload++;
+                console.log("handleSuccess");
+                console.log(fileList);
+                console.log(response);
+                this.form.imgs[this.successUpload - 1].img = response;
             },
             //限制提示
             handleExceed () {
@@ -459,62 +476,31 @@
             //用来判断封面是否被删掉
             //从本地删除图片地址
             handleRemove(file, fileList) {
-                for(let i=0;i<this.form.imgs.length;i++){
-                    this.form.imgs[i].img="";
-                }
-                for(let i=0;i<fileList.length;i++){
-                    this.form.imgs[i].img=fileList[i].response;
-                }
-                if (fileList.length >= 1) {
+                if (fileList.length > 0) {
                     fileList[0].name = "封面"
                 }
-                if(!(file.response===undefined)){
-                    this.$axios({
-                        method:'post',
-                        url:'/deleteImg',
-                        params:{
-                            imgUrl:file.response,
-                        }
-                    })
-                        .catch(()=>{
-                            this.$message.warning("删除失败");
-                        })
-                }
-            },
-            handleProgress(event, file, fileList){
-                console.log("handleProgress");
-                console.log(event);
-                console.log(file);
-                console.log(fileList);
             },
             //放大图片
             handlePictureCardPreview(file) {
                 this.dialogImageUrl = file.url;
                 this.dialogVisible = true;
             },
-            //用来设置上传图片的信息
+            //用来修改上传图片的信息，表示封面和书本详细图
             handleOnChange(file,fileList){
-                console.log(fileList)
-
-                if(fileList.length===1){
-                    file.name="封面";
-                }else{
-                    file.name="书本详细图"
-                }
-            },
-            //上传前判断是否有大于1M的图片
-            //设置上传图片的信息
-            beforeUpload(file,fileList){
-                //如果图片大于1M上传失败
                 if(file.size>1048576){
                     this.$message({
                         showClose:true,
                         message: file.name+"大于1M，上传失败",
                         type: 'warning'
                     });
-                    return false;
+                    //找了半天终于解决了，用pop就可以删除掉链表里面的数据了
+                    fileList.pop();
                 }
-                return true;
+                if(fileList.length===1){
+                    file.name="封面";
+                }else{
+                    file.name="书本详细图"
+                }
             },
             /*************************/
             //判断标题是否为空
@@ -617,11 +603,12 @@
             },
             //判断上传图是否为空
             judgeImgs(){
+                console.log(this.form);
                 if(this.form.imgs[0].img===''){
                     //提示信息
                     this.$message({
                         showClose: true,
-                        message: '请上传图片',
+                        message: '至少上传一个封面',
                         type: 'warning'
                     });
                     return false;
@@ -684,7 +671,8 @@
 
             },
             //提交表单
-            onSubmit() {
+            onSubmit(){
+
                 if(this.judgeTitle()&&this.judgeAuthor()&&this.judgeDate()&&this.judgePress()&&this.judgeNewOld()&&this.judgeContact()&&this.judgeQQ()&&this.judgeAbs()&&this.judgeImgs()&&this.judgeCid()){
                     this.$axios
                         .post('/insert',{
@@ -714,9 +702,13 @@
                                     type: 'success',
                                     message: '添加成功'
                                 });
+                                //提交成功过后清除EditFirm表单，并隐藏表单
                                 this.clearEditForm();
                                 this.clearImgs();
+                                //归零上传成功的图片个数
+                                this.successUpload=0;
                                 this.dialogFormVisible=false;
+                                //提交后使Books页面刷新
                                 this.$emit('onSubmit')
                             }else{
                                 this.$message({

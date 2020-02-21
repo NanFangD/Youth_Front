@@ -6,7 +6,7 @@
             </router-link>
         </el-header>
         <el-main class="el-main" >
-            <div style="overflow:hidden; margin-top: 30px;">
+            <div style=" margin-top: 30px;">
                 <div style="margin-left: 200px; float: left;">
                     <div class="col-left">
                         <img :src="bookMsg.cover" class="img-title" />

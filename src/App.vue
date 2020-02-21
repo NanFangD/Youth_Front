@@ -1,7 +1,9 @@
 
 <template>
   <div id="app" >
-    <router-view/>
+    <el-scrollbar  view-class="view-box" :native="true"  >
+      <router-view/>
+    </el-scrollbar>
   </div>
 </template>
 <script>
