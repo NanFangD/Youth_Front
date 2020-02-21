@@ -50,7 +50,6 @@
                         .then(
                             successResponse => {
                                 if (successResponse.data !=="") {
-                                    console.log(successResponse.data);
                                     this.$message({
                                         showClose: true,
                                         message: '登录成功',
@@ -60,7 +59,6 @@
                                     // localStorage.setItem('user',JSON.stringify(successResponse.data.uid));
                                     this.$router.replace({path: '/library'})
                                 }else{
-                                    console.log(successResponse);
                                     this.$message({
                                         showClose: true,
                                         message: '账号或密码错误',
@@ -69,7 +67,11 @@
                                 }
                             })
                         .catch(failResponse => {
-                            console.log(failResponse)
+                            this.$message({
+                                showClose: true,
+                                message: '账号或密码错误',
+                                type: 'error'
+                            });
                         })
                 }else{
                     this.$message({

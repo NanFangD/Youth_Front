@@ -20,7 +20,6 @@
         methods: {
             indexSelect(index) {
                 let url = 'categories/' + index + '/books';
-                console.log(url);
                 this.$axios.get(url)
                 .then(resp => {
                     if (resp && resp.status === 200) {

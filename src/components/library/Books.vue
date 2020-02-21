@@ -11,7 +11,7 @@
                     <span>{{item.date}}</span> /
                     <span>{{item.price}}元</span>
                 </p>
-                
+
                 <el-card style="width: 135px;margin-bottom: 20px;height: 233px;float: left;margin-right: 15px" class="book"
                          bodyStyle="padding:10px" shadow="hover">
                     <router-link target="_blank" :to="{
@@ -40,12 +40,10 @@
                         <div class="title">
                             <a href="">{{item.title}}</a>
                         </div>
-                        <!--<i class="el-icon-delete" @click="deleteBook(item.id)"></i>-->
                     </div>
                     <div class="author" style="color: #ee231e;">{{item.price}}元 </div>
                 </el-card>
             </el-tooltip>
-            <!--<edit-form @onSubmit="loadBooks()" ref="edit"></edit-form>-->
         </el-row>
         <el-row>
             <el-pagination
@@ -59,12 +57,13 @@
 </template>
 
 <script>
-    import EditForm from './EditForm'
     import SearchBar from './SearchBar'
     //引入公共组件Bus，方便组件之间传递信息
     export default {
         name: 'Books',
-        components: {EditForm,SearchBar},
+        components: {
+            SearchBar
+        },
         data () {
             return {
                 books: [],
