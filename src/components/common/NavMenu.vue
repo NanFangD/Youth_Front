@@ -13,7 +13,8 @@
                 {{ item.navItem }}</el-menu-item>
             <div class="logout"  @click="logout">注销</div>
             <i class="el-icon-menu" style="float:right;font-size: 45px;color: #44cb73;padding-top: 8px"></i>
-            <span style="position: absolute;padding-top: 20px;right: 43%;font-size: 20px;font-weight: bold">Youth  - One Piece</span>
+            <img src="../../../public/img/background/Youth-OnePiece_1.png" class="imgTitle"   style="height:50px;width:330px; pointer-events: none;"/>
+            <!--<span >Youth  - One Piece</span>-->
         </el-menu>
     </div>
 </template>

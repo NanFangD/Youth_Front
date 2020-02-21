@@ -118,7 +118,6 @@
                                 img_4:img_4,
                                 img_5:img_5,
                             }).then(resp => {
-                                console.log("delete:"+resp);
                             if (resp && resp.status === 200) {
                                 if(resp.data.code===200){
                                     this.$message({
@@ -147,7 +146,6 @@
                 })
             },
             sendBookMsg(item){
-                console.log(item.title);
                 this.$bus.emit("bookMsg",item.title);
             }
         }

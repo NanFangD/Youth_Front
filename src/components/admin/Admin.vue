@@ -21,7 +21,6 @@
         },
         methods:{
             selectByIndexAndUid(index,uid){
-                console.log("cid:uid");
                 this.$axios.post('categories/uid/UserBooks',{
                     cid:index,
                     uid:this.$refs.booksArea.uid,

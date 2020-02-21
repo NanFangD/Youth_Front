@@ -88,7 +88,6 @@
                                 newPass:this.ruleForm.pass,
                             }
                         }).then(successResponse=>{
-                            console.log(successResponse);
                             if(successResponse.data.code===200){
                                 this.$message({
                                     showClose: true,

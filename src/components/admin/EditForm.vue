@@ -11,7 +11,7 @@
                 </el-form-item>
                 <el-form-item label="出版日期" :label-width="formLabelWidth" prop="date">
                     <div class="block">
-                        <el-date-picker v-model="form.date" type="year" placeholder="选择年" ></el-date-picker>
+                        <el-date-picker v-model="form.date" type="year" value-format="yyyy" placeholder="选择年" ></el-date-picker>
                     </div>
                 </el-form-item>
                 <el-form-item label="价格" :label-width="formLabelWidth" prop="price">
@@ -429,22 +429,28 @@
             }
         },
         methods:{
+            // 改变时间的格式
+            dateChangeYear(val){
+                this.form.date = val;
+            },
             //时间延迟加载1.5秒
             handleSubmit() {
-                //图片提交至后端
-                this.$refs.upload.submit();
-                const loading = this.$loading({
-                    lock: true,
-                    text: 'Loading',
-                    spinner: 'el-icon-loading',
-                    background: 'rgba(0, 0, 0, 0.7)'
-                });
-                setTimeout(() => {
-                    //关闭延迟界面
-                    loading.close();
-                    //数据提交
-                    this.onSubmit()
-                }, 1500);
+                if(this.judgeTitle()&&this.judgeAuthor()&&this.judgeDate()&&this.judgePress()&&this.judgeNewOld()&&this.judgeContact()&&this.judgeQQ()&&this.judgeAbs()&&this.judgeCid()) {
+                    //图片提交至后端
+                    this.$refs.upload.submit();
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+                    setTimeout(() => {
+                        //关闭延迟界面
+                        loading.close();
+                        //数据提交
+                        this.onSubmit()
+                    }, 1500);
+                }
             },
             /*******imgUpload方法******/
             //只有点击确定按钮后文件才开始上传
@@ -459,9 +465,6 @@
             handleSuccess(response, file, fileList) {
                 //记录上传成功的图片个数
                 this.successUpload++;
-                console.log("handleSuccess");
-                console.log(fileList);
-                console.log(response);
                 this.form.imgs[this.successUpload - 1].img = response;
             },
             //限制提示
@@ -603,7 +606,6 @@
             },
             //判断上传图是否为空
             judgeImgs(){
-                console.log(this.form);
                 if(this.form.imgs[0].img===''){
                     //提示信息
                     this.$message({
@@ -672,8 +674,7 @@
             },
             //提交表单
             onSubmit(){
-
-                if(this.judgeTitle()&&this.judgeAuthor()&&this.judgeDate()&&this.judgePress()&&this.judgeNewOld()&&this.judgeContact()&&this.judgeQQ()&&this.judgeAbs()&&this.judgeImgs()&&this.judgeCid()){
+                if(this.judgeImgs()){
                     this.$axios
                         .post('/insert',{
                             cover:this.form.imgs[0].img,

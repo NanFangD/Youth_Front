@@ -282,7 +282,6 @@
         },
         methods: {
             handleChange(value) {
-                console.log(value);
                 this.indexSelect(value[value.length-1]);
             },
             indexSelect(index){
