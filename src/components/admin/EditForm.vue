@@ -33,10 +33,10 @@
                     <el-input v-model="form.contact"  autocomplete="off" placeholder="请输入您的姓名"></el-input>
                 </el-form-item>
                 <el-form-item label="电话" :label-width="formLabelWidth" prop="price">
-                    <el-input v-model="form.phone"  autocomplete="off" placeholder="请输入联系电话"></el-input>
+                    <el-input v-model="form.phone"  autocomplete="off" placeholder="请输入联系电话" oninput = "value=value.replace(/[^\d]/g,'')"></el-input>
                 </el-form-item>
                 <el-form-item label="QQ" :label-width="formLabelWidth" prop="price">
-                    <el-input v-model="form.qq"  autocomplete="off" placeholder="请输入QQ号"></el-input>
+                    <el-input v-model="form.qq"  autocomplete="off" placeholder="请输入QQ号" oninput = "value=value.replace(/[^\d]/g,'')"></el-input>
                 </el-form-item>
                 <el-form-item label="微信" :label-width="formLabelWidth" prop="price">
                     <el-input v-model="form.weChat"  autocomplete="off" placeholder="请输入微信号"></el-input>
@@ -48,20 +48,25 @@
                     <el-upload
                             class="upload-demo"
                             accept="image/jpeg,image/gif,image/png"
-                            action="http://localhost:8443/api/uploadImg"
+                            action="http://118.25.61.247:8443/api/uploadImg"
                             :on-exceed="handleExceed"
                             :on-remove="handleRemove"
                             :before-upload="beforeUpload"
+                            :on-preview="handlePictureCardPreview"
                             :on-success="handleSuccess"
+                            :on-progress="handleProgress"
                             :limit="6"
                             :on-change="handleOnChange"
                             ref="upload"
                             :file-list="fileList"
-                            :auto-upload="false"
                             list-type="picture">
                         <el-button slot="trigger" size="small" type="success">点击上传</el-button>
                         <div slot="tip"  class="el-upload__tip">只能上传jpg/png/gif文件，且不超过1M</div>
                     </el-upload>
+                    <!--放大显示图片-->
+                    <el-dialog :visible.sync="dialogVisible" append-to-body>
+                        <img width="100%" fit="contain" :src="dialogImageUrl" alt="">
+                    </el-dialog>
                 </el-form-item>
                 <el-form-item label="分类" :label-width="formLabelWidth" prop="cid">
                     <template slot="title">专业课</template>
@@ -87,6 +92,8 @@
         },
         data() {
             return {
+                dialogVisible:false,
+                dialogImageUrl:'',
                 fileList: [],
                 dialogFormVisible: false,
                 uid:'',
@@ -474,8 +481,21 @@
                         })
                 }
             },
+            handleProgress(event, file, fileList){
+                console.log("handleProgress");
+                console.log(event);
+                console.log(file);
+                console.log(fileList);
+            },
+            //放大图片
+            handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
+            },
             //用来设置上传图片的信息
             handleOnChange(file,fileList){
+                console.log(fileList)
+
                 if(fileList.length===1){
                     file.name="封面";
                 }else{
@@ -497,6 +517,7 @@
                 return true;
             },
             /*************************/
+            //判断标题是否为空
             judgeTitle(){
                 if(this.form.title===''){
                     //提示信息
@@ -510,6 +531,7 @@
                     return true;
                 }
             },
+            //判断作者是否为空
             judgeAuthor() {
                 if(this.form.author===''){
                     //提示信息
@@ -523,6 +545,7 @@
                     return true;
                 }
             },
+            //判断日期是否为空
             judgeDate(){
                 if(this.form.date===''){
                     //提示信息
@@ -536,6 +559,7 @@
                     return true;
                 }
             },
+            //判断价格是否为空
             judgePress(){
                 if(this.form.price===''){
                     //提示信息
@@ -549,6 +573,7 @@
                     return true;
                 }
             },
+            //判断新旧是否为空
             judgeNewOld(){
                 if(this.form.newOld===''){
                     //提示信息
@@ -562,6 +587,7 @@
                     return true;
                 }
             },
+            //判断联系人是否为空
             judgeContact(){
                 if(this.form.contact===''){
                     //提示信息
@@ -575,6 +601,7 @@
                     return true;
                 }
             },
+            //判断qq号是否为空
             judgeQQ(){
                 if(this.form.qq===''){
                     //提示信息
@@ -656,6 +683,7 @@
                 this.clearImgs ();
 
             },
+            //提交表单
             onSubmit() {
                 if(this.judgeTitle()&&this.judgeAuthor()&&this.judgeDate()&&this.judgePress()&&this.judgeNewOld()&&this.judgeContact()&&this.judgeQQ()&&this.judgeAbs()&&this.judgeImgs()&&this.judgeCid()){
                     this.$axios
@@ -702,9 +730,11 @@
                     return false;
                 }
             },
+            //选定新旧程度
             handleChangeNewOld(value){
                 this.form.newOld=value[value.length-1];
             },
+            //选定种类
             handleChangeCategory(value){
                 this.form.cid=value[value.length-1];
             }
