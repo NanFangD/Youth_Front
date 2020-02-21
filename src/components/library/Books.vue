@@ -89,8 +89,6 @@
                     .then(resp => {
                     if (resp && resp.status === 200) {
                         this.books = resp.data
-                        console.log(this.books);
-                        console.log(this.books[0].imgs)
                     }
                 })
             },
@@ -120,7 +118,6 @@
                             .post('/delete', {
                                 id: id
                             }).then(resp => {
-                                console.log(resp);
                             if (resp && resp.status === 200) {
                                 if(resp.data.code===200){
                                     this.$message({
@@ -149,7 +146,6 @@
                 })
             },
             sendBookMsg(item){
-                console.log(item.title);
                 this.$bus.emit("bookMsg",item.title);
             }
         }

@@ -282,7 +282,6 @@
         },
         methods: {
             handleChange(value) {
-                console.log(value);
                 let i=0;
                 switch(value.length){
                     case 1: i=0;break;
