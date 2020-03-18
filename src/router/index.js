@@ -1,37 +1,33 @@
-import Vue from 'vue'
+// import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 //为了输出警告信息，告知未登录的用户
 import { Message } from 'element-ui';
-//一级目录
-import Login from '../components/Login'
-import Home from '../components/common/Home'
-//二级目录
-import Index from '../components/index/Index'
-import Jotter from '../components/jotter/Jotter'
-import Library from '../components/library/Library'
-import Admin from '../components/admin/Admin'
-//弹出新页面
-import BookMsg from '../components/BookMsg'
-
-Vue.use(VueRouter);
+// Vue.use(VueRouter);
 const routes = [
     //首界面
     {
         path: '/',
         name: 'Default',
         redirect: '/Library',
-        component: Library
+        component(resolve){
+            require(['../components/library/Library'],resolve)
+        }
     },
     //登录界面
     {
         path: '/login',
         name: 'Login',
-        component: Login
+        component(resolve){
+            require(['../components/Login'],resolve)
+        }
     },
     {
         path:'/bookMsg',
         name:'BookMsg',
-        component:BookMsg
+        component(resolve){
+            require(['../components/BookMsg'],resolve)
+        }
     },
     //主菜单栏
     {
@@ -43,34 +39,44 @@ const routes = [
             // 为true表示用户访问该组件的时候需要登录
             auth: true,
         },
-        component: Home,
+        component(resolve){
+            require(['../components/common/Home'],resolve)
+        },
         children:[
             //首页
             {
                 path:'/index',
                 name:'Index',
-                component:Index,
+                component(resolve){
+                    require(['../components/index/Index'],resolve)
+                },
                 meta:{auth: true},
             },
             //笔记本
             {
                 path:'/jotter',
                 name:'Jotter',
-                component:Jotter,
+                component(resolve){
+                    require(['../components/jotter/Jotter'],resolve)
+                },
                 meta:{auth: true},
             },
             //图书馆
             {
                 path:'/library',
                 name:'Library',
-                component:Library,
+                component(resolve){
+                    require(['../components/library/Library'],resolve)
+                },
                 meta:{auth: true},
             },
             //个人中心
             {
                 path:'/admin',
                 name:'Admin',
-                component:Admin,
+                component(resolve){
+                    require(['../components/admin/Admin'],resolve)
+                },
                 meta:{auth: true},
             }
         ]

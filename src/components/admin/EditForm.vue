@@ -441,7 +441,7 @@
                     const loading = this.$loading({
                         lock: true,
                         text: 'Loading',
-                        spinner: 'el-icon-loading',
+                        spinner: 'el-icons-loading',
                         background: 'rgba(0, 0, 0, 0.7)'
                     });
                     setTimeout(() => {
@@ -449,7 +449,7 @@
                         loading.close();
                         //数据提交
                         this.onSubmit()
-                    }, 1500);
+                    }, 2500);
                 }
             },
             /*******imgUpload方法******/
