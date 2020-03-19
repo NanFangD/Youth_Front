@@ -83,7 +83,7 @@
                             method:'post',
                             url:'/changePassword',
                             params:{
-                                uid:localStorage.getItem("user"),
+                                uid:(this.getCookie("user")-10)/2,
                                 oldPass:this.ruleForm.oldPass,
                                 newPass:this.ruleForm.pass,
                             }
@@ -116,6 +116,18 @@
                         return false;
                     }
                 });
+            },
+            getCookie(name){
+                let strCookie = document.cookie;//获取cookie字符串
+                let arrCookie = strCookie.split("; ");//分割
+                //遍历匹配
+                for ( let i = 0; i < arrCookie.length; i++) {
+                    let arr = arrCookie[i].split("=");
+                    if (arr[0] === name){
+                        return arr[1];
+                    }
+                }
+                return "";
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();

@@ -55,8 +55,8 @@
                                         message: '登录成功',
                                         type: 'success'
                                     });
-                                    localStorage.setItem('user',successResponse.data);
-                                    // localStorage.setItem('user',JSON.stringify(successResponse.data.uid));
+                                    //将账号存到cookie中,存储时间为一天
+                                    document.cookie="user="+(successResponse.data*2+10)+";"+"expires="+1000*60*60;
                                     this.$router.replace({path: '/library'})
                                 }else{
                                     this.$message({

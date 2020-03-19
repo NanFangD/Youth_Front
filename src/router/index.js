@@ -1,33 +1,26 @@
-// import Vue from 'vue'
 import VueRouter from 'vue-router'
-
 //为了输出警告信息，告知未登录的用户
+import axios from 'axios';
 import { Message } from 'element-ui';
-// Vue.use(VueRouter);
 const routes = [
     //首界面
     {
         path: '/',
         name: 'Default',
         redirect: '/Library',
-        component(resolve){
-            require(['../components/library/Library'],resolve)
-        }
+        component:resolve=> require(['@/components/library/Library'],resolve)
+
     },
     //登录界面
     {
         path: '/login',
         name: 'Login',
-        component(resolve){
-            require(['../components/Login'],resolve)
-        }
+        component:resolve=> require(['@/components/Login'],resolve)
     },
     {
         path:'/bookMsg',
         name:'BookMsg',
-        component(resolve){
-            require(['../components/BookMsg'],resolve)
-        }
+        component:resolve=> require(['@/components/BookMsg'],resolve)
     },
     //主菜单栏
     {
@@ -39,44 +32,34 @@ const routes = [
             // 为true表示用户访问该组件的时候需要登录
             auth: true,
         },
-        component(resolve){
-            require(['../components/common/Home'],resolve)
-        },
+        component:resolve=> require(['@/components/common/Home'],resolve),
         children:[
             //首页
             {
                 path:'/index',
                 name:'Index',
-                component(resolve){
-                    require(['../components/index/Index'],resolve)
-                },
+                component:resolve=> require(['@/components/index/Index'],resolve),
                 meta:{auth: true},
             },
             //笔记本
             {
                 path:'/jotter',
                 name:'Jotter',
-                component(resolve){
-                    require(['../components/jotter/Jotter'],resolve)
-                },
+                component:resolve=> require(['@/components/jotter/Jotter'],resolve),
                 meta:{auth: true},
             },
             //图书馆
             {
                 path:'/library',
                 name:'Library',
-                component(resolve){
-                    require(['../components/library/Library'],resolve)
-                },
+                component:resolve=> require(['@/components/library/Library'],resolve),
                 meta:{auth: true},
             },
             //个人中心
             {
                 path:'/admin',
                 name:'Admin',
-                component(resolve){
-                    require(['../components/admin/Admin'],resolve)
-                },
+                component:resolve=> require(['@/components/admin/Admin'],resolve),
                 meta:{auth: true},
             }
         ]
@@ -88,23 +71,47 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 });
+function getCookie(name){
+    let strCookie = document.cookie;//获取cookie字符串
+    let arrCookie = strCookie.split("; ");//分割
+    //遍历匹配
+    for ( let i = 0; i < arrCookie.length; i++) {
+        let arr = arrCookie[i].split("=");
+        if (arr[0] === name){
+            return arr[1];
+        }
+    }
+    return "";
+}
 //全局守卫
 router.beforeEach((to, form, next) => {
     //若用户没有登录则跳转至About界面
     if (to.meta.auth) {
-        if (localStorage.getItem('user')) {
-            next();
-        } else {
-            //提醒用户登录后再进入
-            Message({
-                showClose: true,
-                message: '请先登录',
-                type: 'warning'
+        axios({
+            method:'post',
+            url:'/selectUser',
+            params:{
+                uid:((getCookie("user")-10)/2)
+            }})
+            .then(
+                successResponse => {
+                    if (successResponse.data===true) {
+                        next();
+                    }else {
+                        //提醒用户登录后再进入
+                        Message({
+                            showClose: true,
+                            message: '请先登录',
+                            type: 'warning'
+                        });
+                        next({
+                            path: '/login'
+                        })
+                    }
+                })
+            .catch(failResponse => {
+
             });
-            next({
-                path: '/login'
-            })
-        }
     } else {
         next();
     }

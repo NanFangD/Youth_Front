@@ -2,6 +2,16 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const productionGzipExtensions = ['js', 'css'];
 module.exports = {
     configureWebpack: {
+        //将chunk-vendors分开打包
+        // optimization: {
+        //     splitChunks: {
+        //         minSize: 5000,
+        //         maxSize: 10000,
+        //         chunks:'all',
+        //         maxInitialRequests:10,
+        //         maxAsyncRequests:10
+        //     }
+        // },
         //使用cdn加速
         externals: {
             'vue': 'Vue',
@@ -19,8 +29,8 @@ module.exports = {
             })
         ]
     },
-    // 生产环境 sourceMap,防止看到源代码
-    productionSourceMap: true,
+    //改为false隐藏自己的源码
+    productionSourceMap: false,
     // 在多核机器下会默认开启。
     parallel: require('os').cpus().length > 1,
     // PWA 插件的选项。
@@ -28,8 +38,6 @@ module.exports = {
     // 配置 webpack-dev-server 行为。
     devServer: {
         port: 80,
-        https: true,
-        proxy: '', // string | Object
     },
     // 是否使用包含运行时编译器的 Vue 构建版本
     runtimeCompiler: false,
@@ -40,7 +48,7 @@ module.exports = {
 
         // 是否将组件中的 CSS 提取至一个独立的 CSS 文件中,当作为一个库构建时，你也可以将其设置为 false 免得用户自己导入 CSS
         // 默认生产环境下是 true，开发环境下是 false
-        extract: false,
+        extract: true,
         // 是否为 CSS 开启 source map。设置为 true 之后可能会影响构建的性能
         sourceMap: false,
         //向 CSS 相关的 loader 传递选项(支持 css-loader postcss-loader sass-loader less-loader stylus-loader)

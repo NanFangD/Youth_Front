@@ -40,24 +40,45 @@
                 <el-form-item label="简介" :label-width="formLabelWidth" prop="abs">
                     <el-input type="textarea"  v-model="form.abs" autocomplete="off" placeholder="请输入所出售书本简介"></el-input>
                 </el-form-item>
+                <el-form-item label="上传封面" :label-width="formLabelWidth" prop="cover">
+                    <el-upload
+                            action="http://118.25.61.247:8443/api/uploadImg"
+                            list-type="picture-card"
+                            :on-exceed="handleExceedCover"
+                            :on-preview="handlePictureCardPreview"
+                            :on-change="handleOnChange"
+                            :on-success="handleSuccessCover"
+                            :file-list="fileListCover"
+                            ref="uploadCover"
+                            :limit="1"
+                            :auto-upload="false"
+                    >
+                        <i class="el-icon-light-rain"></i>
+                    </el-upload>
+                    <!--放大显示图片-->
+                    <el-dialog :visible.sync="dialogVisible">
+                        <img width="100%" :src="dialogImageUrl" alt="">
+                    </el-dialog>
+                    <!--选择专业类别-->
+                </el-form-item>
                 <!--图片上传-->
                 <el-form-item label="上传图片" :label-width="formLabelWidth" prop="cover">
                     <el-upload
                             class="upload-demo"
-                            accept="image/jpeg,image/gif,image/png"
+                            accept="image/jpeg,image/png"
                             action="http://118.25.61.247:8443/api/uploadImg"
+                            multiple="true"
                             :on-exceed="handleExceed"
-                            :on-remove="handleRemove"
                             :on-preview="handlePictureCardPreview"
                             :on-success="handleSuccess"
-                            :limit="6"
+                            :limit="5"
                             :on-change="handleOnChange"
                             ref="upload"
                             :auto-upload="false"
                             :file-list="fileList"
-                            list-type="picture">
-                        <el-button slot="trigger" size="small" type="success">点击上传</el-button>
-                        <div slot="tip"  class="el-upload__tip">只能上传jpg/png/gif文件，且不超过1M</div>
+                            list-type="picture-card">
+                        <i class="el-icon-sunny"></i>
+                        <div slot="tip"  class="el-upload__tip">只能上传jpg/png文件，且不超过1M</div>
                     </el-upload>
                     <!--放大显示图片-->
                     <el-dialog :visible.sync="dialogVisible" append-to-body>
@@ -94,7 +115,9 @@
                 dialogVisible:false,
                 dialogImageUrl:'',
                 fileList: [],
+                fileListCover:[],
                 dialogFormVisible: false,
+                //隐藏和显示上传图标
                 uid:'',
                 form: {
                     title: '', //书名
@@ -108,8 +131,8 @@
                     weChat:'', //微信
                     abs: '', //简介
                     cid: '', //种类
+                    cover:'',//封面
                     imgs:[
-                        {img:''}, //封面图
                         {img:''}, //图片1
                         {img:''},
                         {img:''},
@@ -433,9 +456,11 @@
             dateChangeYear(val){
                 this.form.date = val;
             },
-            //时间延迟加载1.5秒
+            //时间延迟加载2秒
             handleSubmit() {
                 if(this.judgeTitle()&&this.judgeAuthor()&&this.judgeDate()&&this.judgePress()&&this.judgeNewOld()&&this.judgeContact()&&this.judgeQQ()&&this.judgeAbs()&&this.judgeCid()) {
+                    //封面提交至后端
+                    this.$refs.uploadCover.submit();
                     //图片提交至后端
                     this.$refs.upload.submit();
                     const loading = this.$loading({
@@ -449,10 +474,19 @@
                         loading.close();
                         //数据提交
                         this.onSubmit()
-                    }, 2500);
+                    }, 2000);
                 }
             },
-            /*******imgUpload方法******/
+            /*****封面上传的方法****/
+            handleSuccessCover(response, file, fileList) {
+                this.form.cover= response;
+                fileList.pop();
+            },
+            handleExceedCover (){
+                this.$message.warning(`最多允许上传一个封面`)
+            },
+            /********************/
+            /*******详细图imgUpload方法******/
             //只有点击确定按钮后文件才开始上传
             //取消按钮
             onCancel(){
@@ -469,19 +503,12 @@
             },
             //限制提示
             handleExceed () {
-                this.$message.warning(`最多允许上传六张图片`)
+                this.$message.warning(`最多允许上传五张图片`)
             },
             //清除上传显示的所有图片
             clearImgs () {
+                this.$refs.uploadCover.clearFiles();
                 this.$refs.upload.clearFiles()
-            },
-            //文件列表移除文件时的钩子
-            //用来判断封面是否被删掉
-            //从本地删除图片地址
-            handleRemove(file, fileList) {
-                if (fileList.length > 0) {
-                    fileList[0].name = "封面"
-                }
             },
             //放大图片
             handlePictureCardPreview(file) {
@@ -498,11 +525,6 @@
                     });
                     //找了半天终于解决了，用pop就可以删除掉链表里面的数据了
                     fileList.pop();
-                }
-                if(fileList.length===1){
-                    file.name="封面";
-                }else{
-                    file.name="书本详细图"
                 }
             },
             /*************************/
@@ -606,11 +628,20 @@
             },
             //判断上传图是否为空
             judgeImgs(){
+                if(this.form.cover===''){
+                    //提示信息
+                    this.$message({
+                        showClose: true,
+                        message: '请上传书的封面',
+                        type: 'warning'
+                    });
+                    return false;
+                }
                 if(this.form.imgs[0].img===''){
                     //提示信息
                     this.$message({
                         showClose: true,
-                        message: '至少上传一个封面',
+                        message: '请上书本实物图',
                         type: 'warning'
                     });
                     return false;
@@ -653,17 +684,15 @@
                     author: '', //作者
                     date: '', //出版日期
                     price: '', //价格
-                    newOld:'', //新旧
                     contact:'', //联系人姓名
                     phone:'', //电话
                     qq:'', //qq
                     weChat:'', //微信
                     abs: '', //简介
-                    cid: '', //种类
+                    cover:'',//封面
                     imgs:[
-                        {img:''}, //封面图
-                        {img:''}, //图片1
                         {img:''},
+                        {img:''}, //图片1
                         {img:''},
                         {img:''},
                         {img:''},
@@ -677,7 +706,7 @@
                 if(this.judgeImgs()){
                     this.$axios
                         .post('/insert',{
-                            cover:this.form.imgs[0].img,
+                            cover:this.form.cover,
                             title:this.form.title,
                             author:this.form.author,
                             date:this.form.date,
@@ -687,11 +716,11 @@
                             phone:this.form.phone,
                             qq:this.form.qq,
                             weChat:this.form.weChat,
-                            img_1:this.form.imgs[1].img,
-                            img_2:this.form.imgs[2].img,
-                            img_3:this.form.imgs[3].img,
-                            img_4:this.form.imgs[4].img,
-                            img_5:this.form.imgs[5].img,
+                            img_1:this.form.imgs[0].img,
+                            img_2:this.form.imgs[1].img,
+                            img_3:this.form.imgs[2].img,
+                            img_4:this.form.imgs[3].img,
+                            img_5:this.form.imgs[4].img,
                             abs:this.form.abs,
                             cid:this.form.cid,
                             uid:this.uid,

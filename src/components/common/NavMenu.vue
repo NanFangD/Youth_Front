@@ -33,7 +33,8 @@
         },
         methods:{
             logout(){
-                localStorage.removeItem("user");
+                //删除cookie
+                document.cookie="user="+";"+"expires="+0;
                 this.$router.replace({path: '/login'});
                 this.$message({
                     showClose:true,

@@ -2,8 +2,70 @@ import './registerServiceWorker'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import ELEMENT from 'element-ui'
-Vue.use(ELEMENT);
+/*****Element-Ui按需引入*****/
+import {
+    Button,
+    Select,
+    Input,
+    FormItem,
+    Form,
+    Container,
+    Drawer,
+    Upload,
+    DatePicker,
+    Dialog,
+    Pagination,
+    Link,
+    Card,
+    Tooltip,
+    Aside,
+    Cascader,
+    Submenu,
+    MenuItem,
+    MenuItemGroup,
+    Row,
+    Menu,
+    Col,
+    Main,
+    Header,
+    Footer,
+} from 'element-ui'
+Vue.use(Button);
+Vue.use(Select);
+Vue.use(Input);
+Vue.use(FormItem);
+Vue.use(Form);
+Vue.use(Container);
+Vue.use(Button);
+Vue.use(Select);
+Vue.use(Input);
+Vue.use(FormItem);
+Vue.use(Form);
+Vue.use(Container);
+Vue.use(Drawer);
+Vue.use(Upload);
+Vue.use(DatePicker);
+Vue.use(Dialog);
+Vue.use(Pagination);
+Vue.use(Link);
+Vue.use(Card);
+Vue.use(Tooltip);
+Vue.use(Aside);
+Vue.use(Cascader);
+Vue.use(Submenu);
+Vue.use(MenuItem);
+Vue.use(MenuItemGroup);
+Vue.use(Row);
+Vue.use(Menu);
+Vue.use(Col);
+Vue.use(Main);
+Vue.use(Header);
+Vue.use(Footer);
+/******************/
+/****全局引入****/
+// import ELEMENT from 'element-ui'
+// Vue.use(ELEMENT);
+/******************/
 import VueBus from 'vue-bus';
 Vue.use(VueBus);
 //自适应手机屏幕
@@ -14,13 +76,6 @@ axios.defaults.baseURL = 'http://118.25.61.247:8443/api';
 Vue.prototype.$axios = axios;
 Vue.use(ELEMENT);
 Vue.config.productionTip = false;
-
-/*****上线后关闭webpack防止源码泄露******/
-const isDebug_mode = process.env.NODE_ENV !== 'production';
-Vue.config.debug = isDebug_mode;
-Vue.config.devtools = isDebug_mode;
-Vue.config.productionTip = isDebug_mode;
-/************************************/
 new Vue({
   router,
   render: h => h(App),

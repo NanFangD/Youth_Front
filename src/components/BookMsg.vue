@@ -51,8 +51,8 @@
                 详细图片
             </div>
             <div style="margin-top: 40px;">
-                <div style="margin: 20px" v-for="img in bookMsg.imgs">
-                    <img :src="img.img" />
+                <div style="margin: 20px;" v-for="img in bookMsg.imgs">
+                    <img style=" width:600px;" :src="img.img" />
                 </div>
             </div>
         </div>
@@ -114,6 +114,7 @@
 </script>
 
 <style scoped>
+
     .abs{
         margin:20px;
         border:2px;

@@ -74,19 +74,30 @@
         //挂载数据后执行
         mounted(){
             //登录时存储的账号，方便读取用户数据
-            this.uid=localStorage.getItem('user');
+            this.uid=(this.getCookie('user')-10)/2;
             this.$refs.edit.uid=this.uid;
             this.loadBooks();
             this.$bus.on("changeCurrentPage",(val)=>{
                 this.currentPage=val;
             });
-
         },
         destroyed() {
             this.$bus.off("changeCurrentPage");
         },
 
         methods: {
+            getCookie(name){
+                let strCookie = document.cookie;//获取cookie字符串
+                let arrCookie = strCookie.split("; ");//分割
+                //遍历匹配
+                for ( let i = 0; i < arrCookie.length; i++) {
+                    let arr = arrCookie[i].split("=");
+                    if (arr[0] === name){
+                        return arr[1];
+                    }
+                }
+                return "";
+            },
             loadBooks () {
                 this.$axios.post('/booksByUid',{
                     uid:this.uid,
