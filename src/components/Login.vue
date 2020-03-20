@@ -56,7 +56,9 @@
                                         type: 'success'
                                     });
                                     //将账号存到cookie中,存储时间为一天
-                                    document.cookie="user="+(successResponse.data*2+10)+";"+"expires="+1000*60*60;
+                                    let d = new Date();
+                                    d.setTime(d.getTime()+(3600000));
+                                    document.cookie="user="+(successResponse.data*2+10)+";"+"expires="+d.toUTCString();
                                     this.$router.replace({path: '/library'})
                                 }else{
                                     this.$message({

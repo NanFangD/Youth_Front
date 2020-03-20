@@ -24,7 +24,7 @@
         data () {
             return {
                 navList: [
-                    // {name: '/index', navItem: '首页'},
+                    {name: '/index', navItem: '首页'},
                     // {name: '/jotter', navItem: '笔记本'},
                     {name: '/library', navItem: '图书馆'},
                     {name: '/admin', navItem: '个人中心'}
@@ -34,7 +34,9 @@
         methods:{
             logout(){
                 //删除cookie
-                document.cookie="user="+";"+"expires="+0;
+                let date = new Date();
+                date.setTime(date.getTime()+(0));
+                document.cookie="user="+";"+"expires="+date.toUTCString();
                 this.$router.replace({path: '/login'});
                 this.$message({
                     showClose:true,
