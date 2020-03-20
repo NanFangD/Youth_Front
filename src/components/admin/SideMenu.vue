@@ -39,7 +39,7 @@
                 </el-submenu>
                 <el-submenu index="3">
                     <template slot="title">
-                        <i class="el-icon-grape"></i>
+                        <i class="el-icon-watermelon"></i>
                         <span>考研资料</span>
                     </template>
                     <el-menu-item-group>
@@ -63,7 +63,7 @@
                 </el-menu-item>
                 <el-submenu index="5">
                     <template slot="title">
-                        <i class="el-icon-grape"></i>
+                        <i class="el-icon-apple"></i>
                         <span>英语</span>
                     </template>
                     <el-menu-item-group>
@@ -74,11 +74,11 @@
                     </el-menu-item-group>
                 </el-submenu>
                 <el-menu-item index="6" @click="indexSelect('6')">
-                    <i class="el-icon-orange"></i>
+                    <i class="el-icon-ice-cream-round"></i>
                     <span slot="title">励志类</span>
                 </el-menu-item>
                 <el-menu-item index="7" @click="indexSelect('7')">
-                    <i class="el-icon-orange"></i>
+                    <i class="el-icon-pear"></i>
                     <span slot="title">心理学</span>
                 </el-menu-item>
             </el-menu>

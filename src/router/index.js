@@ -7,8 +7,8 @@ const routes = [
     {
         path: '/',
         name: 'Default',
-        redirect: '/Library',
-        component:resolve=> require(['@/components/library/Library'],resolve)
+        redirect: '/index',
+        component:resolve=> require(['@/components/index/Index'],resolve),
 
     },
     //登录界面

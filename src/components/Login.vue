@@ -1,7 +1,8 @@
 <template>
 <div id="poster">
     <el-form class="loginContainer" label-position="left" label-width="0px">
-        <h3 class="loginTitle">Youth 登录</h3>
+        <img class="loginTitle" src="../../public/img/ww/title.png"/>
+        <!--<h3 class="loginTitle">Youth</h3>-->
         <el-form-item >
             <el-input @keyup.enter.native="login" autofocus="autofocus" type="text" v-model="loginForm.uid" auto-complete="off" placeholder="账号"></el-input>
         </el-form-item>
@@ -59,7 +60,7 @@
                                     let d = new Date();
                                     d.setTime(d.getTime()+(3600000));
                                     document.cookie="user="+(successResponse.data*2+10)+";"+"expires="+d.toUTCString();
-                                    this.$router.replace({path: '/library'})
+                                    this.$router.replace({path: '/index'})
                                 }else{
                                     this.$message({
                                         showClose: true,
@@ -110,9 +111,10 @@
     }
 
     .loginTitle {
-        margin: 0px auto 40px auto;
+        margin: 0px auto 20px auto;
         text-align: center;
         color: #505458;
+        width:90px;
     }
 </style>
 

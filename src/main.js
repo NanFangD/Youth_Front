@@ -29,7 +29,9 @@ import {
     Main,
     Header,
     Footer,
+    Popover,
 } from 'element-ui'
+Vue.use(Popover);
 Vue.use(Button);
 Vue.use(Select);
 Vue.use(Input);
