@@ -1,7 +1,7 @@
 <template>
 <div id="poster">
     <el-form class="loginContainer" label-position="left" label-width="0px">
-        <img class="loginTitle" src="../../public/img/ww/title.png"/>
+        <img class="loginTitle" src="../../public/img/background/title.png"/>
         <!--<h3 class="loginTitle">Youth</h3>-->
         <el-form-item >
             <el-input @keyup.enter.native="login" autofocus="autofocus" type="text" v-model="loginForm.uid" auto-complete="off" placeholder="账号"></el-input>

@@ -71,7 +71,7 @@
         background-size: 100% ;
     }
     .main{
-        background:url("../../../public/img/ww/12.jpg");
+        background:url("../../../public/img/background/12.jpg");
         background-size: 100% ;
         right: 0;
         height: 660px;
