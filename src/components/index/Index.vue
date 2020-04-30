@@ -26,6 +26,8 @@
                         <p>加油</p>
                     </el-card>
                     <el-card class="foot">
+                        访问人数
+                        <div align="center"><a href="http://www.amazingcounters.com"><img border="0" src="http://cc.amazingcounters.com/counter.php?i=3244912&c=9735049" alt="AmazingCounters.com"></a></div>
                         <h4>nanfang</h4>
                         <p>致力于用技术解决生活中的问题</p>
                     </el-card>
