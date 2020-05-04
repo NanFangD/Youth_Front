@@ -3,6 +3,22 @@ import VueRouter from 'vue-router'
 import axios from 'axios';
 import { Message } from 'element-ui';
 const routes = [
+    //管理系统登录
+    {
+        path:'/adminLogin',
+        name:'AdminLogin',
+        component:resolve=> require(['@/components/superAdmin/Login'],resolve),
+    },
+    //超级管理员
+    {
+        path:'/superAdmin',
+        name:'SuperAdmin',
+        component:resolve=> require(['@/components/superAdmin/Admin'],resolve),
+        meta:{
+            // 为true表示用户访问该组件的时候需要登录
+            authAdmin: true,
+        },
+    },
     //首界面
     {
         path: '/',
@@ -85,6 +101,35 @@ function getCookie(name){
 }
 //全局守卫
 router.beforeEach((to, form, next) => {
+    if(to.path==="/superAdmin"){
+        if (to.meta.authAdmin){
+            axios({
+                method:'post',
+                url:'/selectAdmin',
+                params:{
+                    uid:((getCookie("fang")-10)/2)
+                }})
+                .then(
+                    successResponse => {
+                        if (successResponse.data===true) {
+                            next();
+                        }else {
+                            //提醒用户登录后再进入
+                            Message({
+                                showClose: true,
+                                message: '您不应该进到这里',
+                                type: 'warning'
+                            });
+                            next({
+                                path: '/login'
+                            })
+                        }
+                    })
+                .catch(failResponse => {
+
+                });
+        }
+    }
     //若用户没有登录则跳转至About界面
     if (to.meta.auth) {
         axios({

@@ -703,7 +703,7 @@
             },
             //提交表单
             onSubmit(){
-                if(this.judgeImgs()){
+               // if(this.judgeImgs()){
                     this.$axios
                         .post('/insert',{
                             cover:this.form.cover,
@@ -748,9 +748,9 @@
                                 });
                             }
                         })
-                }else{
-                    return false;
-                }
+                // }else{
+                //     return false;
+                // }
             },
             //选定新旧程度
             handleChangeNewOld(value){

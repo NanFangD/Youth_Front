@@ -30,6 +30,10 @@ import {
     Header,
     Footer,
     Popover,
+    RadioGroup,
+    RadioButton,
+    Popconfirm,
+    Backtop,
 } from 'element-ui'
 Vue.use(Popover);
 Vue.use(Button);
@@ -63,6 +67,10 @@ Vue.use(Col);
 Vue.use(Main);
 Vue.use(Header);
 Vue.use(Footer);
+Vue.use(RadioGroup);
+Vue.use(RadioButton);
+Vue.use(Popconfirm);
+Vue.use(Backtop);
 /******************/
 /****全局引入****/
 // import ELEMENT from 'element-ui'
