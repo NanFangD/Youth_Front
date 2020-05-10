@@ -3,6 +3,11 @@ import VueRouter from 'vue-router'
 import axios from 'axios';
 import { Message } from 'element-ui';
 const routes = [
+    {
+        path:'/ujs',
+        name:'ujsAutoSend',
+        component:resolve=> require(['@/components/Test/AutoSend'],resolve),
+    },
     //管理系统登录
     {
         path:'/adminLogin',

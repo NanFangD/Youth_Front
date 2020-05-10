@@ -95,7 +95,6 @@
                             username:"",
                         };
                         this.tableData.unshift(user);
-                        console.log(this.tableData);
                         this.$message({
                             showClose: true,
                             message: '添加成功',
@@ -207,7 +206,6 @@
                         if (successResponse.data !=="") {
                             this.tableData=successResponse.data;
                             this.allUser=this.tableData;
-                            console.log(this.tableData)
                         }else{
                             this.$message({
                                 showClose: true,
